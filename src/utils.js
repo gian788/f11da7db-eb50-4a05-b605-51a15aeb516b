@@ -1,4 +1,4 @@
-const { forEach, times } = require('lodash/fp');
+const { map, times } = require('lodash/fp');
 
 const getCompanyToString = (company) =>
   `${company.id}; ${company.name}; owner of ${company.parcelsCount} land parcels`;
@@ -6,20 +6,20 @@ const getCompanyToString = (company) =>
 const getCompanyRowString = (company, level, selectedCompanyId) => {
   const prefix = times(() => '  | - ', level).join('');
   const companyStr = getCompanyToString(company);
-  return prefix + companyStr + (selectedCompanyId === company.id && ' <---O');
+  return prefix + companyStr + (selectedCompanyId === company.id ? ' <---O' : '');
 };
 
-const printSubCompanies = (companies = [], level = 1, selectedCompanyId) => {
-  forEach((company) => {
-    console.log(getCompanyRowString(company, level, selectedCompanyId));
+const getSubCompaniesString = (companies = [], level = 1, selectedCompanyId) =>
+  map((company) => {
+    let str = getCompanyRowString(company, level, selectedCompanyId);
     if (company.subCompanies && company.subCompanies.length) {
-      printSubCompanies(company.subCompanies, level + 1, selectedCompanyId);
+      str += `\n${getSubCompaniesString(company.subCompanies, level + 1, selectedCompanyId)}`;
     }
-  }, companies);
-};
+    return str;
+  }, companies).join('\n');
 
 module.exports = {
   getCompanyToString,
   getCompanyRowString,
-  printSubCompanies,
+  getSubCompaniesString,
 };

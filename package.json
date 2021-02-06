@@ -16,6 +16,6 @@
     "prettier": "^2.2.1"
   },
   "scripts": {
-    "test": "mocha --reporter spec"
+    "test": "mocha --reporter spec 'tests/**/*.test.js'"
   }
 }

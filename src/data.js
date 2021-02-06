@@ -67,14 +67,6 @@ exports.getLandOwnershipData = () => {
     } else {
       companyParcels[companyId] = [landId];
     }
-
-    // Bonus: % owend land parcel
-    // const [landId, companyId, percentage] = line.split(',');
-    // if (landOwnership[landId]) {
-    //   landOwnership[landId].push({ companyId, percentage });
-    // } else {
-    //   landOwnership[landId] = [{ companyId, percentage }];
-    // }
   });
 
   return {

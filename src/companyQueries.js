@@ -1,6 +1,6 @@
 const { cloneDeep, getOr, map, flow, sum, forEach, sortBy } = require('lodash/fp');
 const { getCompaniesData, getLandOwnershipData } = require('./data');
-const { getCompanyRowString, printSubCompanies } = require('./utils');
+const { getCompanyRowString, getSubCompaniesString } = require('./utils');
 
 const { companiesMap, rootCompaniesMap, parentMap } = getCompaniesData();
 const { companyParcels } = getLandOwnershipData();
@@ -23,7 +23,7 @@ exports.fromRoot = (companyId) => {
   populateLandParcelsOwned(rootCompany);
 
   console.log(`${rootId}; ${rootCompany.name}; owner of ${rootCompany.parcelsCount} land parcels`);
-  printSubCompanies(rootCompany.subCompanies, 1, companyId);
+  console.log(getSubCompaniesString(rootCompany.subCompanies, 1, companyId));
 };
 
 exports.expand = (companyId) => {
