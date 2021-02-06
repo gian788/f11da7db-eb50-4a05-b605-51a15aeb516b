@@ -1,6 +1,6 @@
 const fs = require('fs');
 const path = require('path');
-const { cloneDeep, getOr, map, flow, sum, forEach, times } = require('lodash/fp');
+const { cloneDeep, getOr, map, flow, sum, forEach, times, sortBy } = require('lodash/fp');
 
 // this will give me the name and root company id
 const companiesMap = {};
@@ -75,6 +75,12 @@ fs.readFileSync(path.resolve(__dirname, '../data/land_ownership.csv'), 'utf8')
 const getCompanyToString = (company) =>
   `${company.id}; ${company.name}; owner of ${company.parcelsCount} land parcels`;
 
+const getCompanyRowString = (company, level, selectedCompanyId) => {
+  const prefix = times(() => '  | - ', level).join('');
+  const companyStr = getCompanyToString(company);
+  return prefix + companyStr + (selectedCompanyId === company.id && ' ***');
+};
+
 const populateLandParcelsOwned = (parent) => {
   const { subCompanies = [], id } = parent;
   const directlyOwnedParcels = getOr(0, `${id}.length`, companyParcels);
@@ -85,9 +91,7 @@ const populateLandParcelsOwned = (parent) => {
 
 const printSubCompanies = (companies = [], level = 1, selectedCompanyId) => {
   forEach((company) => {
-    const prefix = times(() => '  | - ', level).join('');
-    const companyStr = getCompanyToString(company);
-    console.log(prefix + companyStr + (selectedCompanyId === company.id && ' ***'));
+    console.log(getCompanyRowString(company, level, selectedCompanyId));
     if (company.subCompanies && company.subCompanies.length) {
       printSubCompanies(company.subCompanies, level + 1, selectedCompanyId);
     }
@@ -99,17 +103,31 @@ const fromRoot = (companyId) => {
   if (!company) {
     return 'Company not found!';
   }
-  console.log(company);
   const rootId = company.rootId || companyId;
   const rootCompany = cloneDeep(rootCompaniesMap[rootId]);
-  console.log(rootCompany);
-  // console.log(JSON.stringify(rootCompany));
   populateLandParcelsOwned(rootCompany);
-
-  console.log(JSON.stringify(rootCompany));
-  console.log(rootCompany);
 
   console.log(`${rootId}; ${rootCompany.name}; owner of ${rootCompany.parcelsCount} land parcels`);
   printSubCompanies(rootCompany.subCompanies, 1, companyId);
 };
-fromRoot('C588860501079');
+// fromRoot('C588860501079');
+
+const expand = (companyId) => {
+  const company = companiesMap[companyId];
+  if (!company) {
+    return 'Company not found!';
+  }
+  let companies = [company];
+  if (company.parentId) {
+    const siblingsCompany = flow(map((id) => ({ id, ...companiesMap[id] })))(
+      parentMap[company.parentId],
+    );
+    forEach(populateLandParcelsOwned, siblingsCompany);
+    companies = [company, ...siblingsCompany];
+  }
+
+  companies = sortBy('name', companies);
+  forEach((item) => console.log(getCompanyRowString(item, 1, companyId)), companies);
+};
+
+expand('C588860501079');
