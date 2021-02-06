@@ -1,0 +1,14 @@
+{
+  "name": "landTech",
+  "version": "1.0.0",
+  "license": "MIT",
+  "dependencies": {
+    "lodash": "^4.17.20"
+  },
+  "devDependencies": {
+    "eslint": "^7.19.0",
+    "eslint-config-airbnb": "^18.2.1",
+    "eslint-plugin-no-only-tests": "^2.4.0",
+    "prettier": "^2.2.1"
+  }
+}
