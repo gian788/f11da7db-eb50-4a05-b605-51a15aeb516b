@@ -1,14 +1,21 @@
 {
   "name": "landTech",
   "version": "1.0.0",
-  "license": "MIT",
   "dependencies": {
-    "lodash": "^4.17.20"
+    "chai": "^4.3.0",
+    "expect": "^26.6.2",
+    "lodash": "^4.17.20",
+    "mocha": "^8.2.1",
+    "mock-fs": "^4.13.0",
+    "yargs": "^16.2.0"
   },
   "devDependencies": {
     "eslint": "^7.19.0",
     "eslint-config-airbnb": "^18.2.1",
     "eslint-plugin-no-only-tests": "^2.4.0",
     "prettier": "^2.2.1"
+  },
+  "scripts": {
+    "test": "mocha --reporter spec"
   }
 }

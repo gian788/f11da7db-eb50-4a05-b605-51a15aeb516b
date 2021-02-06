@@ -4,5 +4,8 @@
   "rules": {
     "no-only-tests/no-only-tests": "error",
     "no-param-reassign": ["error", { "props": false }]
+  },
+  "env": {
+    "node": true
   }
 }
