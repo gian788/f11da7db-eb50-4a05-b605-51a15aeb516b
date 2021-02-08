@@ -1,11 +1,18 @@
 {
-  "extends": ["airbnb"],
-  "plugins": ["no-only-tests"],
+  "extends": ["airbnb", "prettier"],
+  "plugins": ["no-only-tests", "prettier", "jest"],
   "rules": {
     "no-only-tests/no-only-tests": "error",
-    "no-param-reassign": ["error", { "props": false }]
+    "no-param-reassign": ["error", { "props": false }],
+    "prettier/prettier": ["error"],
+    "jest/no-disabled-tests": "warn",
+    "jest/no-focused-tests": "error",
+    "jest/no-identical-title": "error",
+    "jest/prefer-to-have-length": "warn",
+    "jest/valid-expect": "error"
   },
   "env": {
-    "node": true
+    "node": true,
+    "jest/globals": true
   }
 }

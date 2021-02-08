@@ -21,4 +21,4 @@ I decided to duplicate the companies data to make it quicker to get the full com
 
 ## Notes:
 
-I didn't have time to fix the eslint config to make it work with the test files and prettier
+I used 15 more minutes to fix eslint and move from mocha to jest
